@@ -17,13 +17,13 @@ SaaS application combining:
 - Deployment: Debian server
 
 ## Build Plan
-- [ ] Project initialization & structure
-- [ ] Database schema design
-- [ ] Backend API setup
-- [ ] Authentication (OAuth)
-- [ ] CRM features
-- [ ] Support ticket system
-- [ ] Roadmap/issue tracking
+- [x] Project initialization & structure
+- [x] Database schema design
+- [x] Backend API setup
+- [x] Authentication (OAuth)
+- [x] CRM features (API)
+- [x] Support ticket system (API)
+- [x] Roadmap/issue tracking (API)
 - [ ] Frontend UI
 - [ ] Deployment scripts
 - [ ] Documentation
@@ -32,7 +32,18 @@ SaaS application combining:
 
 ### 2025-01-29 09:30 UTC - Project Start
 - Initialized git repository
-- Created PROGRESS.md
+- Created PROGRESS.md and DESIGN.md
+
+### 2025-01-29 09:35 UTC - Backend Complete
+- ✅ Database schema (PostgreSQL with full relations)
+- ✅ Express server with TypeScript
+- ✅ OAuth authentication (Google + GitHub via Passport)
+- ✅ CRM API (contacts CRUD + search + activity timeline)
+- ✅ Tickets API (CRUD + messages + roadmap linking)
+- ✅ Roadmap API (CRUD + voting + ticket linking)
+- ✅ Auth middleware and role-based access
+- ✅ Input validation with Zod
+- Commits: Initial setup, schema, API routes
 
 ---
 *This file is updated continuously as work progresses*
