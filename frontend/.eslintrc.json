@@ -29,5 +29,5 @@
     "browser": true,
     "es2022": true
   },
-  "ignorePatterns": ["dist", "node_modules", "*.config.*", "*.cjs"]
+  "ignorePatterns": ["dist", "node_modules", "*.config.*", "*.cjs", "tests/**/*"]
 }
