@@ -12,10 +12,7 @@ interface OAuthProfile {
 }
 
 async function findOrCreateUser(profile: OAuthProfile) {
-  const email = profile.emails[0]?.value;
-  if (!email) throw new Error('No email found in OAuth profile');
-
-  // Check if user exists
+  // Check if user exists by OAuth provider + ID
   const existing = await query(
     'SELECT * FROM users WHERE oauth_provider = $1 AND oauth_id = $2',
     [profile.provider, profile.id]
@@ -24,6 +21,9 @@ async function findOrCreateUser(profile: OAuthProfile) {
   if (existing.rows.length > 0) {
     return existing.rows[0];
   }
+
+  // Get email, or use placeholder if not available
+  const email = profile.emails?.[0]?.value || `${profile.provider}-${profile.id}@oauth.local`;
 
   // Create new user
   const result = await query(
