@@ -3,7 +3,9 @@ import passport from '../config/passport';
 
 const router = Router();
 
-// Google OAuth
+// Google OAuth (disabled - only using GitHub for now)
+// Uncomment these routes and add GOOGLE_CLIENT_ID/SECRET to .env to enable
+/*
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get(
@@ -13,6 +15,7 @@ router.get(
     res.redirect(process.env.FRONTEND_URL || 'http://localhost:5173');
   }
 );
+*/
 
 // GitHub OAuth
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
