@@ -1,0 +1,14 @@
+# Pre-commit: Fast checks (lint + typecheck)
+echo "🔍 Running pre-commit checks..."
+
+pnpm lint:fix || {
+  echo "❌ Linting failed. Please fix errors before committing."
+  exit 1
+}
+
+pnpm typecheck || {
+  echo "❌ Type checking failed. Please fix type errors before committing."
+  exit 1
+}
+
+echo "✅ Pre-commit checks passed!"

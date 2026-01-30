@@ -1,60 +1,61 @@
 #!/bin/bash
+# Deployment script for venn
+# Usage: ./scripts/deploy.sh [staging|production]
+
 set -e
 
-echo "🚀 venn deployment script"
+ENVIRONMENT=${1:-production}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-# Configuration
-APP_DIR="/var/www/venn"
-BACKEND_DIR="$APP_DIR/backend"
-FRONTEND_DIR="$APP_DIR/frontend"
+echo "🚀 Deploying venn to $ENVIRONMENT..."
 
-# Colors
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# Pre-flight checks
+echo "✈️  Running pre-flight checks..."
 
-print_step() {
-    echo -e "${GREEN}▶ $1${NC}"
-}
+# Check if we're in a git repository
+if [ ! -d "$PROJECT_ROOT/.git" ]; then
+  echo "❌ Error: Not in a git repository"
+  exit 1
+fi
 
-print_warn() {
-    echo -e "${YELLOW}⚠ $1${NC}"
-}
-
-# Check if running in correct directory
-if [ ! -f "package.json" ] || [ ! -d "../backend" ]; then
-    print_warn "Please run this script from the venn project root"
+# Check for uncommitted changes
+if ! git diff-index --quiet HEAD --; then
+  echo "⚠️  Warning: You have uncommitted changes"
+  read -p "Continue anyway? (y/N) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     exit 1
+  fi
 fi
 
-# Pull latest code (if git)
-if [ -d ".git" ]; then
-    print_step "Pulling latest code..."
-    git pull
-fi
+# Run tests locally
+echo "🧪 Running tests..."
+cd "$PROJECT_ROOT"
+pnpm test || {
+  echo "❌ Tests failed. Aborting deployment."
+  exit 1
+}
 
-# Backend deployment
-print_step "Deploying backend..."
-cd "$BACKEND_DIR"
-pnpm install --production=false
-pnpm build
+# Build production artifacts
+echo "🔨 Building production artifacts..."
+pnpm build || {
+  echo "❌ Build failed. Aborting deployment."
+  exit 1
+}
 
-# Frontend deployment
-print_step "Deploying frontend..."
-cd "$FRONTEND_DIR"
-pnpm install --production=false
-pnpm build
+echo "📦 Production build complete!"
 
-# Restart backend
-print_step "Restarting backend..."
-pm2 restart venn-api || pm2 start "$BACKEND_DIR/dist/index.js" --name venn-api
+# TODO: Once server access is configured, add deployment steps here:
+# - Backup current deployment
+# - Transfer files to server
+# - Run database migrations
+# - Restart services
+# - Run smoke tests
+# - Rollback on failure
 
-# Save PM2 config
-pm2 save
+echo "⚠️  Server deployment not yet configured."
+echo "   Artifacts are ready in backend/dist and frontend/dist"
+echo "   Configure server access and update this script to complete deployment."
 
-print_step "Deployment complete! ✨"
-echo ""
-echo "Next steps:"
-echo "  - Visit your domain to verify"
-echo "  - Check logs: pm2 logs venn-api"
-echo "  - Monitor: pm2 monit"
+exit 0

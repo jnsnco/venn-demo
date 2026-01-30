@@ -1,0 +1,17 @@
+# Pre-push: Full validation (tests + build)
+echo "🧪 Running pre-push validation..."
+
+# Run all tests
+pnpm test || {
+  echo "❌ Tests failed. Please fix failing tests before pushing."
+  exit 1
+}
+
+# Validate production builds
+echo "🔨 Validating production builds..."
+pnpm build || {
+  echo "❌ Build failed. Please fix build errors before pushing."
+  exit 1
+}
+
+echo "✅ All pre-push checks passed! Safe to push."

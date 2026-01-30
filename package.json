@@ -1,0 +1,21 @@
+{
+  "name": "venn",
+  "version": "1.0.0",
+  "private": true,
+  "description": "venn - Unified CRM, Support & Roadmap platform",
+  "scripts": {
+    "prepare": "husky",
+    "test": "pnpm -r test",
+    "test:coverage": "pnpm -r test:coverage",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "typecheck": "pnpm -r typecheck",
+    "build": "pnpm -r build",
+    "build:backend": "cd backend && pnpm build",
+    "build:frontend": "cd frontend && pnpm build",
+    "validate": "pnpm lint && pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
+}
