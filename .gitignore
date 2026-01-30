@@ -1,13 +1,36 @@
 node_modules/
 dist/
 build/
+
+# Environment files (NEVER COMMIT THESE!)
 .env
-.env.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
 *.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
 .DS_Store
-coverage/
+Thumbs.db
+
+# Editors
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+
+# Testing
+coverage/
 .cache/
+
+# Local development
+*.local
+.vercel
