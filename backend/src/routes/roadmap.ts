@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import { Request } from 'express';
 import { query } from '../config/database';
-import { requireAuth, AuthRequest } from '../middleware/auth';
+import { requireAuth } from '../middleware/auth';
 import { z } from 'zod';
 
 const router = Router();
@@ -15,7 +16,7 @@ const roadmapSchema = z.object({
 });
 
 // List roadmap items (public endpoint for customer-facing roadmap)
-router.get('/', async (req: AuthRequest, res) => {
+router.get('/', async (req: Request, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
@@ -75,7 +76,7 @@ router.get('/', async (req: AuthRequest, res) => {
 });
 
 // Get single roadmap item
-router.get('/:id', async (req: AuthRequest, res) => {
+router.get('/:id', async (req: Request, res) => {
   try {
     const result = await query(
       `SELECT ri.*,
@@ -128,7 +129,7 @@ router.get('/:id', async (req: AuthRequest, res) => {
 });
 
 // Create roadmap item (authenticated users only)
-router.post('/', requireAuth, async (req: AuthRequest, res) => {
+router.post('/', requireAuth, async (req: Request, res) => {
   try {
     const data = roadmapSchema.parse(req.body);
 
@@ -158,7 +159,7 @@ router.post('/', requireAuth, async (req: AuthRequest, res) => {
 });
 
 // Update roadmap item
-router.patch('/:id', requireAuth, async (req: AuthRequest, res) => {
+router.patch('/:id', requireAuth, async (req: Request, res) => {
   try {
     const data = roadmapSchema.partial().parse(req.body);
     const updates: string[] = [];
@@ -203,7 +204,7 @@ router.patch('/:id', requireAuth, async (req: AuthRequest, res) => {
 });
 
 // Vote for roadmap item
-router.post('/:id/vote', async (req: AuthRequest, res) => {
+router.post('/:id/vote', async (req: Request, res) => {
   try {
     const { contact_id, organization_id } = req.body;
 
@@ -227,7 +228,7 @@ router.post('/:id/vote', async (req: AuthRequest, res) => {
 });
 
 // Remove vote
-router.delete('/:id/vote', async (req: AuthRequest, res) => {
+router.delete('/:id/vote', async (req: Request, res) => {
   try {
     const { contact_id } = req.body;
 

@@ -1,15 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
-export interface AuthRequest extends Request {
-  user?: {
-    id: number;
-    email: string;
-    name: string;
-    role: string;
-  };
-}
+// User type is now defined in src/types/express.d.ts via module augmentation
+export type AuthRequest = Request;
 
-export function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
+export function requireAuth(req: Request, res: Response, next: NextFunction) {
   if (!req.isAuthenticated() || !req.user) {
     return res.status(401).json({ error: 'Authentication required' });
   }
@@ -17,7 +11,7 @@ export function requireAuth(req: AuthRequest, res: Response, next: NextFunction)
 }
 
 export function requireRole(...roles: string[]) {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({ error: 'Insufficient permissions' });
     }

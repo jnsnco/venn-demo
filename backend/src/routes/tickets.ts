@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import { Request } from 'express';
 import { query } from '../config/database';
-import { requireAuth, AuthRequest } from '../middleware/auth';
+import { requireAuth } from '../middleware/auth';
 import { z } from 'zod';
 
 const router = Router();
@@ -20,7 +21,7 @@ const messageSchema = z.object({
 });
 
 // List tickets
-router.get('/', async (req: AuthRequest, res) => {
+router.get('/', async (req: Request, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
@@ -71,7 +72,7 @@ router.get('/', async (req: AuthRequest, res) => {
 });
 
 // Get single ticket
-router.get('/:id', async (req: AuthRequest, res) => {
+router.get('/:id', async (req: Request, res) => {
   try {
     const ticketResult = await query(
       `SELECT t.*, c.name as contact_name, c.email as contact_email,
@@ -118,7 +119,7 @@ router.get('/:id', async (req: AuthRequest, res) => {
 });
 
 // Create ticket
-router.post('/', async (req: AuthRequest, res) => {
+router.post('/', async (req: Request, res) => {
   try {
     const data = ticketSchema.parse(req.body);
 
@@ -151,7 +152,7 @@ router.post('/', async (req: AuthRequest, res) => {
 });
 
 // Update ticket
-router.patch('/:id', async (req: AuthRequest, res) => {
+router.patch('/:id', async (req: Request, res) => {
   try {
     const allowedFields = ['subject', 'status', 'priority', 'assigned_to'];
     const updates: string[] = [];
@@ -195,7 +196,7 @@ router.patch('/:id', async (req: AuthRequest, res) => {
 });
 
 // Add message to ticket
-router.post('/:id/messages', async (req: AuthRequest, res) => {
+router.post('/:id/messages', async (req: Request, res) => {
   try {
     const data = messageSchema.parse(req.body);
 
@@ -220,7 +221,7 @@ router.post('/:id/messages', async (req: AuthRequest, res) => {
 });
 
 // Link ticket to roadmap item
-router.post('/:id/roadmap-links', async (req: AuthRequest, res) => {
+router.post('/:id/roadmap-links', async (req: Request, res) => {
   try {
     const { roadmap_item_id } = req.body;
 

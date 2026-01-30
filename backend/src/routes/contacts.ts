@@ -1,6 +1,7 @@
 import { Router } from 'express';
+import { Request } from 'express';
 import { query } from '../config/database';
-import { requireAuth, AuthRequest } from '../middleware/auth';
+import { requireAuth } from '../middleware/auth';
 import { z } from 'zod';
 
 const router = Router();
@@ -18,7 +19,7 @@ const contactSchema = z.object({
 });
 
 // List contacts
-router.get('/', async (req: AuthRequest, res) => {
+router.get('/', async (req: Request, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
@@ -59,7 +60,7 @@ router.get('/', async (req: AuthRequest, res) => {
 });
 
 // Get single contact
-router.get('/:id', async (req: AuthRequest, res) => {
+router.get('/:id', async (req: Request, res) => {
   try {
     const result = await query(
       `SELECT c.*, o.name as organization_name
@@ -97,7 +98,7 @@ router.get('/:id', async (req: AuthRequest, res) => {
 });
 
 // Create contact
-router.post('/', async (req: AuthRequest, res) => {
+router.post('/', async (req: Request, res) => {
   try {
     const data = contactSchema.parse(req.body);
 
@@ -128,7 +129,7 @@ router.post('/', async (req: AuthRequest, res) => {
 });
 
 // Update contact
-router.patch('/:id', async (req: AuthRequest, res) => {
+router.patch('/:id', async (req: Request, res) => {
   try {
     const data = contactSchema.partial().parse(req.body);
     const updates: string[] = [];
@@ -173,7 +174,7 @@ router.patch('/:id', async (req: AuthRequest, res) => {
 });
 
 // Delete contact
-router.delete('/:id', async (req: AuthRequest, res) => {
+router.delete('/:id', async (req: Request, res) => {
   try {
     const result = await query('DELETE FROM contacts WHERE id = $1 RETURNING id', [req.params.id]);
 
