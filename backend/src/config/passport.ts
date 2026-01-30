@@ -44,13 +44,13 @@ async function findOrCreateUser(profile: OAuthProfile) {
 }
 
 // Google OAuth
-if (process.env.OAUTH_GOOGLE_CLIENT_ID && process.env.OAUTH_GOOGLE_CLIENT_SECRET) {
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: process.env.OAUTH_GOOGLE_CLIENT_ID,
-        clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET,
-        callbackURL: '/api/auth/google/callback',
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL || '/api/auth/google/callback',
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
@@ -71,13 +71,13 @@ if (process.env.OAUTH_GOOGLE_CLIENT_ID && process.env.OAUTH_GOOGLE_CLIENT_SECRET
 }
 
 // GitHub OAuth
-if (process.env.OAUTH_GITHUB_CLIENT_ID && process.env.OAUTH_GITHUB_CLIENT_SECRET) {
+if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
   passport.use(
     new GitHubStrategy(
       {
-        clientID: process.env.OAUTH_GITHUB_CLIENT_ID,
-        clientSecret: process.env.OAUTH_GITHUB_CLIENT_SECRET,
-        callbackURL: '/api/auth/github/callback',
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CALLBACK_URL || '/api/auth/github/callback',
       },
       async (accessToken: string, refreshToken: string, profile: any, done: any) => {
         try {
