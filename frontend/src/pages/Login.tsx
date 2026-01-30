@@ -1,6 +1,8 @@
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export default function Login() {
   const handleGitHubLogin = () => {
-    window.location.href = '/api/auth/github';
+    window.location.href = `${API_URL}/api/auth/github`;
   };
 
   return (
