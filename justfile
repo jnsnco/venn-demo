@@ -42,6 +42,18 @@ deploy-backend:
 deploy-frontend:
     @echo "📦 Deploying frontend..."
     {{ssh_cmd}} 'source ~/.nvm/nvm.sh && cd ~/venn/frontend && pnpm build'
+    @just restart-frontend
+
+# ============================================================================
+# FRONTEND OPERATIONS
+# ============================================================================
+
+# Restart frontend (with SPA routing support)
+restart-frontend:
+    @echo "🔄 Restarting frontend..."
+    {{ssh_cmd}} 'lsof -ti:9000 | xargs kill -9 2>/dev/null || true; sleep 2; source ~/.nvm/nvm.sh && cd ~/venn/frontend/dist && serve --single -l 9000 > ~/venn-frontend.log 2>&1 & echo $! > ~/venn-frontend.pid'
+    @sleep 2
+    @echo "✅ Frontend restarted with SPA routing"
 
 # ============================================================================
 # BACKEND OPERATIONS

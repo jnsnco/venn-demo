@@ -143,11 +143,23 @@ Should be: `http://5.78.83.163:8000/api/auth/github`
    ssh -i ~/.ssh/venn_deploy -p 29689 baro@5.78.83.163 'ps aux | grep serve'
    ```
 
-3. Restart frontend server (manual):
+3. Restart frontend server:
    ```bash
-   ssh -i ~/.ssh/venn_deploy -p 29689 baro@5.78.83.163 \
-     'pkill serve; source ~/.nvm/nvm.sh && cd ~/venn/frontend/dist && serve -l 9000 > ~/venn-frontend.log 2>&1 &'
+   just restart-frontend
    ```
+
+### Frontend Routes 404 (e.g., /contacts refresh)
+
+**Symptoms:** Going to http://5.78.83.163:9000/ works, but http://5.78.83.163:9000/contacts returns 404 on refresh
+
+**Cause:** `serve` needs `--single` flag for SPA (Single Page Application) routing
+
+**Solution:**
+```bash
+just restart-frontend
+```
+
+The `--single` flag tells `serve` to always return `index.html`, letting React Router handle client-side routing.
 
 ### Session Not Persisting (Login Loop)
 
