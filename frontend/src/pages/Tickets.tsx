@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import { tickets } from '../api/client';
 import { Plus, Clock } from 'lucide-react';
 import { format } from 'date-fns';
+import CreateTicketModal from '../components/CreateTicketModal';
 
 export default function Tickets() {
   const [status, setStatus] = useState<string>('');
   const [page, setPage] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['tickets', { page, status }],
@@ -37,7 +39,10 @@ export default function Tickets() {
             <h1 className="text-3xl font-bold text-gray-900">Tickets</h1>
             <p className="text-gray-600 mt-1">Manage customer support requests</p>
           </div>
-          <button className="btn btn-primary flex items-center gap-2">
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="btn btn-primary flex items-center gap-2"
+          >
             <Plus size={20} />
             New Ticket
           </button>
@@ -152,6 +157,12 @@ export default function Tickets() {
             )}
           </div>
         )}
+
+        {/* Create Ticket Modal */}
+        <CreateTicketModal 
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
       </div>
     </div>
   );
