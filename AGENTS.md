@@ -1,4 +1,6 @@
-# Agent Instructions - venn
+# Agent Instructions - venn (avan.academy)
+
+**Context:** venn is a demo project for learning agentic dev/test/ops. The product is the organization (avan), processes, and learnings - NOT venn itself.
 
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
 
@@ -17,9 +19,25 @@ bd list --json        # List all issues (JSON for scripting)
 
 ## Project Context
 
+- **Organization:** avan
+- **Domain:** avan.academy
+- **Project:** venn (demo-quality learning vehicle)
+- **Agent:** barrow (me)
+
+### Infrastructure
+
 - **Build locally** at `/home/barrow/clawd/venn/`
 - **Deploy to** `5.78.83.163` (SSH: `ssh -i ~/.ssh/venn_deploy -p 29689 baro@5.78.83.163`)
 - **Database creds** in local `.db-credentials` file (gitignored)
+
+### Environments (all on one server)
+
+- **Production:** venn.avan.academy (ports 8000/9000)
+- **Test:** test.avan.academy (ports 8001/9001, planned)
+- **Staging:** staging.avan.academy (configured, dormant)
+
+### Current State (before HTTPS)
+
 - **Frontend:** http://5.78.83.163:9000
 - **Backend:** http://5.78.83.163:8000
 - **Database:** PostgreSQL on production server
