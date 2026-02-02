@@ -3,10 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { contacts } from '../api/client';
 import { Search, Plus, Mail, Phone } from 'lucide-react';
+import CreateContactModal from '../components/CreateContactModal';
 
 export default function Contacts() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['contacts', { page, search }],
@@ -29,7 +31,10 @@ export default function Contacts() {
             <h1 className="text-3xl font-bold text-gray-900">Contacts</h1>
             <p className="text-gray-600 mt-1">Manage your customer relationships</p>
           </div>
-          <button className="btn btn-primary flex items-center gap-2">
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="btn btn-primary flex items-center gap-2"
+          >
             <Plus size={20} />
             New Contact
           </button>
@@ -148,6 +153,12 @@ export default function Contacts() {
             )}
           </div>
         )}
+
+        {/* Create Contact Modal */}
+        <CreateContactModal 
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
       </div>
     </div>
   );
