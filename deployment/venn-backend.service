@@ -1,0 +1,36 @@
+[Unit]
+Description=Venn Backend API Server
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=baro
+WorkingDirectory=/home/baro/venn/backend
+Environment=NODE_ENV=production
+Environment=PATH=/home/baro/.nvm/versions/node/v20.20.0/bin:/usr/local/bin:/usr/bin:/bin
+
+# Load environment variables from .env file
+EnvironmentFile=/home/baro/venn/backend/.env
+
+# Run the production build (not dev mode)
+ExecStart=/home/baro/.nvm/versions/node/v20.20.0/bin/node dist/index.js
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=venn-backend
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Resource limits (optional, can adjust)
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

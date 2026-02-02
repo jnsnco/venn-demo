@@ -1,0 +1,30 @@
+[Unit]
+Description=Venn Frontend Static File Server
+After=network.target
+
+[Service]
+Type=simple
+User=baro
+WorkingDirectory=/home/baro/venn/frontend
+Environment=NODE_ENV=production
+Environment=PATH=/home/baro/.nvm/versions/node/v20.20.0/bin:/usr/local/bin:/usr/bin:/bin
+
+# Serve the built static files
+ExecStart=/home/baro/.nvm/versions/node/v20.20.0/bin/serve -s dist -l 9000
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=venn-frontend
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ReadOnlyPaths=/home/baro/venn/frontend/dist
+
+[Install]
+WantedBy=multi-user.target
