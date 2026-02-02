@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { tickets } from '../api/client';
 import { ArrowLeft, Send } from 'lucide-react';
 import { format } from 'date-fns';
+import LinkRoadmapItemForm from '../components/LinkRoadmapItemForm';
 
 export default function TicketDetail() {
   const { id } = useParams();
@@ -145,7 +146,7 @@ export default function TicketDetail() {
             <div className="card">
               <h3 className="font-semibold mb-3">Linked Roadmap Items</h3>
               {ticket.linked_roadmap_items?.length > 0 ? (
-                <div className="space-y-2">
+                <div className="space-y-2 mb-3">
                   {ticket.linked_roadmap_items.map((item: any) => (
                     <Link
                       key={item.id}
@@ -158,8 +159,9 @@ export default function TicketDetail() {
                   ))}
                 </div>
               ) : (
-                <div className="text-gray-500 text-sm">No linked items</div>
+                <div className="text-gray-500 text-sm mb-3">No linked items</div>
               )}
+              <LinkRoadmapItemForm ticketId={parseInt(id!)} />
             </div>
 
             <div className="card">
