@@ -11,8 +11,8 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Get the actual user (not root)
-ACTUAL_USER="${SUDO_USER:-$USER}"
+# Set the user explicitly
+ACTUAL_USER="baro"
 echo "📝 Installing services for user: $ACTUAL_USER"
 
 # Stop any existing dev processes
