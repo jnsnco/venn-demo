@@ -3,10 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { roadmap } from '../api/client';
 import { Plus, ThumbsUp } from 'lucide-react';
+import CreateRoadmapItemModal from '../components/CreateRoadmapItemModal';
 
 export default function Roadmap() {
   const [status, setStatus] = useState<string>('');
   const [page, setPage] = useState(1);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ['roadmap', { page, status }],
@@ -36,7 +38,10 @@ export default function Roadmap() {
             <h1 className="text-3xl font-bold text-gray-900">Product Roadmap</h1>
             <p className="text-gray-600 mt-1">Plan and track product development</p>
           </div>
-          <button className="btn btn-primary flex items-center gap-2">
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="btn btn-primary flex items-center gap-2"
+          >
             <Plus size={20} />
             New Item
           </button>
@@ -129,6 +134,12 @@ export default function Roadmap() {
             )}
           </>
         )}
+
+        {/* Create Roadmap Item Modal */}
+        <CreateRoadmapItemModal 
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
       </div>
     </div>
   );
