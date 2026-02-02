@@ -2,6 +2,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 export default function Login() {
   const handleGitHubLogin = () => {
+    // Force full page navigation, bypassing React Router
     window.location.href = `${API_URL}/auth/github`;
   };
 
@@ -16,6 +17,7 @@ export default function Login() {
         <div className="space-y-3">
           <button
             onClick={handleGitHubLogin}
+            type="button"
             className="w-full btn bg-gray-800 text-white hover:bg-gray-900 flex items-center justify-center gap-2 py-3 text-lg"
           >
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">

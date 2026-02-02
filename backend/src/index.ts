@@ -16,6 +16,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+// Trust proxy - we're behind nginx
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
 app.use(
@@ -34,7 +37,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // TODO: Set to true when using HTTPS
+      secure: true, // HTTPS enabled
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
       sameSite: 'lax',
