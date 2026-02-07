@@ -7,6 +7,7 @@ import passport from './config/passport';
 
 // Routes
 import authRoutes from './routes/auth';
+import usersRoutes from './routes/users';
 import contactsRoutes from './routes/contacts';
 import ticketsRoutes from './routes/tickets';
 import roadmapRoutes from './routes/roadmap';
@@ -56,6 +57,7 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/contacts', contactsRoutes);
 app.use('/api/tickets', ticketsRoutes);
 app.use('/api/roadmap', roadmapRoutes);

@@ -18,3 +18,6 @@ export function requireRole(...roles: string[]) {
     next();
   };
 }
+
+// Convenience helper for admin-only routes
+export const requireAdmin = requireRole('admin');
