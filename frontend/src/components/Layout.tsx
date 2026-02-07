@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { auth } from '../api/client';
-import { Users, Ticket, Map, LogOut } from 'lucide-react';
+import { Users, Ticket, Map, LogOut, UserCog, Shield } from 'lucide-react';
 
 interface LayoutProps {
   user: any;
@@ -26,6 +26,10 @@ export default function Layout({ user }: LayoutProps) {
     { path: '/roadmap', icon: Map, label: 'Roadmap' },
   ];
 
+  const adminItems = [
+    { path: '/admin/users', icon: UserCog, label: 'Users' },
+  ];
+
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
@@ -35,7 +39,7 @@ export default function Layout({ user }: LayoutProps) {
           <p className="text-sm text-gray-500 mt-1">Unified workspace</p>
         </div>
 
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 space-y-6">
           <ul className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -57,6 +61,35 @@ export default function Layout({ user }: LayoutProps) {
               );
             })}
           </ul>
+
+          {user.role === 'admin' && (
+            <div>
+              <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Admin
+              </div>
+              <ul className="space-y-1">
+                {adminItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname.startsWith(item.path);
+                  return (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                          isActive
+                            ? 'bg-primary-50 text-primary-700 font-medium'
+                            : 'text-gray-700 hover:bg-gray-100'
+                        }`}
+                      >
+                        <Icon size={20} />
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </nav>
 
         <div className="p-4 border-t border-gray-200">
@@ -65,7 +98,15 @@ export default function Layout({ user }: LayoutProps) {
               {user.name?.charAt(0) || 'U'}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-gray-900 truncate">{user.name}</div>
+              <div className="flex items-center gap-2">
+                <div className="text-sm font-medium text-gray-900 truncate">{user.name}</div>
+                {user.role === 'admin' && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 rounded-full">
+                    <Shield size={10} />
+                    Admin
+                  </span>
+                )}
+              </div>
               <div className="text-xs text-gray-500 truncate">{user.email}</div>
             </div>
           </div>

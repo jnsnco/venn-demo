@@ -16,6 +16,16 @@ export const auth = {
   logout: () => apiClient.post('/auth/logout'),
 };
 
+// Users (admin only)
+export const users = {
+  list: (params?: { page?: number; limit?: number }) =>
+    apiClient.get('/users', { params }),
+  get: (id: number) => apiClient.get(`/users/${id}`),
+  update: (id: number, data: { name?: string; role?: string }) =>
+    apiClient.patch(`/users/${id}`, data),
+  delete: (id: number) => apiClient.delete(`/users/${id}`),
+};
+
 // Contacts
 export const contacts = {
   list: (params?: { page?: number; limit?: number; search?: string }) =>

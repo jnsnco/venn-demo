@@ -9,6 +9,7 @@ import Tickets from './pages/Tickets';
 import TicketDetail from './pages/TicketDetail';
 import Roadmap from './pages/Roadmap';
 import RoadmapDetail from './pages/RoadmapDetail';
+import AdminUsers from './pages/AdminUsers';
 
 function App() {
   const { data: user, isLoading } = useQuery({
@@ -40,6 +41,9 @@ function App() {
           <Route path="tickets/:id" element={<TicketDetail />} />
           <Route path="roadmap" element={<Roadmap />} />
           <Route path="roadmap/:id" element={<RoadmapDetail />} />
+          {user.role === 'admin' && (
+            <Route path="admin/users" element={<AdminUsers />} />
+          )}
         </Route>
       </Routes>
     </BrowserRouter>
