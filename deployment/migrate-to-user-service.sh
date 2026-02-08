@@ -39,29 +39,35 @@ sudo chown baro:baro /home/baro/.config/systemd/user/venn-frontend.service
 echo "✓ Ownership set"
 echo ""
 
-echo "Step 6: Reloading user daemon..."
+echo "Step 6: Creating target directories..."
+sudo mkdir -p /home/baro/.config/systemd/user/default.target.wants
+sudo chown baro:baro /home/baro/.config/systemd/user/default.target.wants
+echo "✓ Target directories created"
+echo ""
+
+echo "Step 7: Reloading user daemon..."
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user daemon-reload
 echo "✓ Daemon reloaded"
 echo ""
 
-echo "Step 7: Enabling user services..."
+echo "Step 8: Enabling user services..."
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user enable venn-backend
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user enable venn-frontend
 echo "✓ Services enabled"
 echo ""
 
-echo "Step 8: Starting user services..."
+echo "Step 9: Starting user services..."
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user start venn-backend
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user start venn-frontend
 echo "✓ Services started"
 echo ""
 
-echo "Step 9: Enabling lingering (auto-start on boot)..."
+echo "Step 10: Enabling lingering (auto-start on boot)..."
 sudo loginctl enable-linger baro
 echo "✓ Lingering enabled"
 echo ""
 
-echo "Step 10: Verifying services..."
+echo "Step 11: Verifying services..."
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user status venn-backend --no-pager
 echo ""
 sudo -u baro XDG_RUNTIME_DIR=/run/user/$(id -u baro) systemctl --user status venn-frontend --no-pager
