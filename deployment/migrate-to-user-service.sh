@@ -18,7 +18,8 @@ echo ""
 
 echo "Step 2: Creating user service directory..."
 sudo mkdir -p /home/baro/.config/systemd/user/
-echo "✓ Directory created"
+sudo chown -R baro:baro /home/baro/.config/systemd/
+echo "✓ Directory created with correct ownership"
 echo ""
 
 echo "Step 3: Copying service files..."
@@ -27,9 +28,13 @@ sudo cp /etc/systemd/system/venn-frontend.service /home/baro/.config/systemd/use
 echo "✓ Service files copied"
 echo ""
 
-echo "Step 4: Fixing service files (multi-user.target → default.target)..."
+echo "Step 4: Fixing service files for user services..."
+# Change multi-user.target to default.target
 sudo sed -i "s/WantedBy=multi-user.target/WantedBy=default.target/" /home/baro/.config/systemd/user/venn-backend.service
 sudo sed -i "s/WantedBy=multi-user.target/WantedBy=default.target/" /home/baro/.config/systemd/user/venn-frontend.service
+# Remove User= directive (user services run as the owner automatically)
+sudo sed -i "/^User=baro/d" /home/baro/.config/systemd/user/venn-backend.service
+sudo sed -i "/^User=baro/d" /home/baro/.config/systemd/user/venn-frontend.service
 echo "✓ Service files fixed"
 echo ""
 
